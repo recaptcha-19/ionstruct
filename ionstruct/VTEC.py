@@ -96,6 +96,17 @@ def clean(df, GPS = False, elevation = False, TEC = False, VTEC = False, locktim
 	return df	
 
 def VTEC(STEC, elevation, map_func):
+	"""Estimates VTEC from STEC provided an elevation and mapping function
+	
+	Args:
+		STEC (float): Slant Total Electron Content in TEC units
+		elevation (float): Angle of elevation
+		map_func (str): String describing choice of mapping function
+		
+	Returns:
+		float: Vertical Total Electron Content in TEC units
+	
+	"""
 	map_method = getattr(mapf, map_func)
 	VTEC = STEC/map_method(elevation)
 	return VTEC
@@ -124,6 +135,13 @@ def great_circle_distance(el1, el2, az1, az2):
 	return gcd
 
 def VTEC_time(all_dfs, map_fn):
+	"""Displays scatter plot(s) showing variation of VTEC with time for a set of day(s)
+	
+	Args:
+		all_dfs (dict): Master dataframe containing TEC information for the given set of days. Obtained by running day.day()
+		map_fn (str): String describing choice of mapping function
+		  
+	"""
 	
 	for day in all_dfs:
 		print(day)
@@ -176,6 +194,13 @@ def VTEC_time(all_dfs, map_fn):
 		
 	
 def VTEC_STEC(all_dfs, map_fn):
+	"""Displays scatter plot(s) showing variation of VTEC with STEC for a set of day(s)
+	
+	Args:
+		all_dfs (dict): Master dataframe containing TEC information for the given set of days. Obtained by running day.day()
+		map_fn (str): String describing choice of mapping function
+		
+	"""
 
 	for day in all_dfs:
 		print(day)
@@ -212,13 +237,20 @@ def VTEC_STEC(all_dfs, map_fn):
 		plt.title("VTEC vs STEC ({}-{})".format(d, y))
 		plt.legend()
 		plt.grid()
-		plt.savefig("/Data/rpriyadarshan/ismr/sat_TEC_plots/{}/{}_VTEC_STEC_{}.png".format(day, map_fn, day))
-		print("Saved")
-		plt.close()
+		plt.show()
+		#plt.savefig("/Data/rpriyadarshan/ismr/sat_TEC_plots/{}/{}_VTEC_STEC_{}.png".format(day, map_fn, day))
+		#print("Saved")
+		#plt.close()
 	
 	
 def VTEC_averaged(all_dfs, map_fn):	
+	"""Displays plot(s) showing variation of mean, median and RMS VTEC with time for a set of day(s)
 	
+	Args:
+		all_dfs (dict): Master dataframe containing TEC information for the given set of days. Obtained by running day.day()
+		map_fn (str): String describing choice of mapping function
+		
+	"""
 	for day in all_dfs:
 		print(day)
 		year = day[4:]
@@ -282,9 +314,10 @@ def VTEC_averaged(all_dfs, map_fn):
 		plt.title("Vertical TEC ({}-{})".format(d, y))
 		plt.legend()
 		plt.grid()
-		plt.savefig("/Data/rpriyadarshan/ismr/sat_TEC_plots/{}/IRI_GPS_only_{}_VTEC_averaged_{}.png".format(day, map_fn, day))
-		print("Saved")
-		plt.close()
+		plt.show()
+		#plt.savefig("/Data/rpriyadarshan/ismr/sat_TEC_plots/{}/IRI_GPS_only_{}_VTEC_averaged_{}.png".format(day, map_fn, day))
+		#print("Saved")
+		#plt.close()
 		
 
 def VTEC_comparison(all_dfs, map_fn, print_output = False):
@@ -372,6 +405,12 @@ def VTEC_comparison(all_dfs, map_fn, print_output = False):
 
 
 def VTEC_min_comparison(all_dfs, map_fn):
+	"""Displays plot(s) showing great circle distances between pairs of satellites seen in similar elevation bins for a block of day(s)
+	
+	Args:
+		all_dfs (dict): Master dataframe containing TEC information for the given set of days. Obtained by running day.day()
+		map_fn (str): String describing choice of mapping function
+	"""
 	
 	main_df_titles = ['elevations', 'mean_elevation', 'VTECs', 'STECs', 'delta_VTEC', 'great_circle_distance', 'day', 'time', 'SVIDs', 'azimuthal_angles'] 
 	main_dict = {}
@@ -485,8 +524,9 @@ def VTEC_min_comparison(all_dfs, map_fn):
 			plt.xlabel("Mean elevation")
 			plt.ylabel("Great circle distance")
 			plt.title("{}, year {}, SVID: {}".format(day_block, year, no))
-			plt.savefig("/Data/rpriyadarshan/ismr/gcd_mean_el_plots/{}/GPS_only_no_abs_{}_SVID_{}.png".format(day, day, no))
-			plt.close()
+			plt.show()
+			#plt.savefig("/Data/rpriyadarshan/ismr/gcd_mean_el_plots/{}/GPS_only_no_abs_{}_SVID_{}.png".format(day, day, no))
+			#plt.close()
 		print("{} done!".format(day))
 
 '''
